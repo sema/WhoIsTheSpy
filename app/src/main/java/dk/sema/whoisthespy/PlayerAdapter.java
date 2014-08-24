@@ -1,6 +1,5 @@
-package dk.sema.whoisspy;
+package dk.sema.whoisthespy;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
@@ -9,16 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import dk.sema.whoisthespy.game.State;
 
 public class PlayerAdapter extends BaseAdapter {
     private Context mContext;
-    private Game mGame;
+    private State mGame;
 
-    public PlayerAdapter(Context c, Game game) {
+    public PlayerAdapter(Context c, State state) {
         mContext = c;
-        mGame = game;
+        mGame = state;
     }
 
     public int getCount() {

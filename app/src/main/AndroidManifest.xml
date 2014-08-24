@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dk.sema.whoisspy" >
+    package="dk.sema.whoisthespy" >
 
     <application
         android:allowBackup="true"
@@ -21,7 +21,7 @@
             android:parentActivityName=".StartGameActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dk.sema.whoisspy.StartGameActivity" />
+                android:value="dk.sema.whoisthespy.StartGameActivity" />
         </activity>
     </application>
 

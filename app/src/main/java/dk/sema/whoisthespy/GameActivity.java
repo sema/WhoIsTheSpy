@@ -1,4 +1,4 @@
-package dk.sema.whoisspy;
+package dk.sema.whoisthespy;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,12 +11,14 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import dk.sema.whoisthespy.game.State;
+
 
 public class GameActivity extends Activity {
 
     public static final String NUMBER_OF_PLAYERS = "number_of_players";
 
-    private Game mGame;
+    private State mState;
     private PlayerAdapter mPlayerAdapter;
 
     @Override
@@ -25,9 +27,9 @@ public class GameActivity extends Activity {
         setContentView(R.layout.activity_game);
 
         int num_players = getIntent().getIntExtra(NUMBER_OF_PLAYERS, 1);
-        mGame = new Game(num_players);
+        mState = new State(num_players);
 
-        mPlayerAdapter = new PlayerAdapter(this, mGame);
+        mPlayerAdapter = new PlayerAdapter(this, mState);
 
         final GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(mPlayerAdapter);
@@ -36,27 +38,27 @@ public class GameActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-                builder.setTitle(mGame.getPlayerName(position))
+                builder.setTitle(mState.getPlayerName(position))
                        .setItems(R.array.player_actions,
                                new DialogInterface.OnClickListener() {
                                    public void onClick(DialogInterface dialog, int which) {
 
                                         if (which == 0) { // show dialog
-                                           Toast.makeText(GameActivity.this, mGame.getWord(position), Toast.LENGTH_LONG).show();
+                                           Toast.makeText(GameActivity.this, mState.getWord(position), Toast.LENGTH_LONG).show();
 
                                         } else { // kill
-                                            mGame.killPlayer(position);
+                                            mState.killPlayer(position);
                                             mPlayerAdapter.notifyDataSetInvalidated(); // this should have been implemented as a callback between game and adapter
 
-                                            if (mGame.isGameFinished()) {
+                                            if (mState.isGameFinished()) {
 
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-                                                builder.setTitle("Game finished");
-                                                builder.setMessage("The spy was " + mGame.getPlayerName(mGame.getSpyId()));
+                                                builder.setTitle("State finished");
+                                                builder.setMessage("The spy was " + mState.getPlayerName(mState.getSpyId()));
                                                 builder.setCancelable(false);
-                                                builder.setPositiveButton("New Game", new DialogInterface.OnClickListener() {
+                                                builder.setPositiveButton("New State", new DialogInterface.OnClickListener() {
                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        mGame.newGame();
+                                                        mState.newGame();
                                                         mPlayerAdapter.notifyDataSetInvalidated();
                                                    }
                                                 });
@@ -89,7 +91,7 @@ public class GameActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_skip_round) {
-            mGame.newGame();
+            mState.newGame();
             mPlayerAdapter.notifyDataSetInvalidated();
         }
         return super.onOptionsItemSelected(item);

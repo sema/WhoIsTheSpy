@@ -1,12 +1,8 @@
-package dk.sema.whoisspy;
+package dk.sema.whoisthespy.game;
 
 import java.util.Random;
 
-/**
- * Created by semadk on 23/08/14.
- */
-
-public class Game {
+public class State {
 
     private Random mRandom;
 
@@ -19,7 +15,7 @@ public class Game {
     private String mWordNormal;
     private String mWordSpy;
 
-    public Game(int numPlayers) {
+    public State(int numPlayers) {
         mRandom = new Random();
         mNumPlayers = numPlayers >= 3 ? numPlayers : 3;
 
@@ -35,15 +31,15 @@ public class Game {
 
     // Inspect state
 
-    int getSpyId() {
+    public int getSpyId() {
         return mSpyId;
     }
 
-    int getNumPlayers() {
+    public int getNumPlayers() {
         return mNumPlayers;
     }
 
-    String getPlayerName(int playerId) {
+    public String getPlayerName(int playerId) {
         if (playerId < mNumPlayers) {
             return mPlayerNames[playerId];
         } else {
@@ -51,7 +47,7 @@ public class Game {
         }
     }
 
-    String getWord(int playerId) {
+    public String getWord(int playerId) {
         if (playerId == mSpyId) {
             return mWordSpy;
         } else {
@@ -59,15 +55,15 @@ public class Game {
         }
     }
 
-    boolean isPlayerAlive(int playerId) {
+    public boolean isPlayerAlive(int playerId) {
         return playerId < mNumPlayers && mPlayerIsAlive[playerId];
     }
 
-    boolean isGameFinished() {
+    public boolean isGameFinished() {
         return !mPlayerIsAlive[mSpyId] || getNumberPlayersAlive() <= 2;
     }
 
-    int getNumberPlayersAlive() {
+    public int getNumberPlayersAlive() {
         int num = 0;
         for (int i = 0; i < mNumPlayers; ++i) {
             if (mPlayerIsAlive[i]) {
@@ -80,17 +76,17 @@ public class Game {
 
     // Actions
 
-    void killPlayer(int playerId) {
+    public void killPlayer(int playerId) {
         if (playerId < mNumPlayers) {
             mPlayerIsAlive[playerId] = false;
         }
     }
 
-    void newGame() {
+    public void newGame() {
         resetState();
     }
 
-    void renamePlayer(int playerId, String newName) {
+    public void renamePlayer(int playerId, String newName) {
         if (playerId < mNumPlayers) {
             mPlayerNames[playerId] = newName;
         }
@@ -98,23 +94,23 @@ public class Game {
 
     // State
 
-    void resetState() {
+    private void resetState() {
         revivePlayers();
         selectNewSpy();
         selectNewWords();
     }
 
-    void revivePlayers() {
+    private void revivePlayers() {
         for (int i = 0; i < mNumPlayers; i++) {
             mPlayerIsAlive[i] = true;
         }
     }
 
-    void selectNewSpy() {
+    private void selectNewSpy() {
         mSpyId = mRandom.nextInt(mNumPlayers);
     }
 
-    void selectNewWords() {
+    private void selectNewWords() {
         mWordNormal = "Apple";
         mWordSpy = "Pear";
     }
